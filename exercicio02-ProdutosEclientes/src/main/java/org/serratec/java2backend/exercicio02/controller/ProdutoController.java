@@ -3,11 +3,14 @@ package org.serratec.java2backend.exercicio02.controller;
 import java.util.List;
 import java.util.Optional;
 
+import javax.validation.Valid;
+
 import org.serratec.java2backend.exercicio02.domain.Produto;
 import org.serratec.java2backend.exercicio02.repository.ProdutoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -43,15 +46,16 @@ public class ProdutoController {
 	}
 	
 	//POST USADO PARA INSERIR UM PRODUTO
+	//@Valid ELE PEGA AS ENTIDADES (CLASSE PRODUTO) E VERIFICA SE TEM ALGUM CAMPO COM CRITICA; 
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
-	public Produto inserir(@RequestBody Produto produto) {
+	public Produto inserir(@Valid @RequestBody Produto produto) {
 		return produtoRepository.save(produto);
 	}
 	
 	//ATUALIZANDO UM PRODUTO POR ID
 	@PutMapping("/{id}")
-	public ResponseEntity<Produto> atualizar(@RequestBody Produto produto, @PathVariable Long id) {
+	public ResponseEntity<Produto> atualizar(@Valid @RequestBody Produto produto, @PathVariable Long id) {
 		if (!produtoRepository.existsById(id)) {
 			return ResponseEntity.notFound().build();
 		}

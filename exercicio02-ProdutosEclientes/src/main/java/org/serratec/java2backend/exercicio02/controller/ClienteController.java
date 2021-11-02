@@ -3,6 +3,8 @@ package org.serratec.java2backend.exercicio02.controller;
 import java.util.List;
 import java.util.Optional;
 
+import javax.validation.Valid;
+
 import org.serratec.java2backend.exercicio02.domain.Cliente;
 import org.serratec.java2backend.exercicio02.repository.ClienteRepository;
 import org.serratec.java2backend.exercicio02.repository.ProdutoRepository;
@@ -50,16 +52,22 @@ public class ClienteController {
 	
 	//INSERIR UM NOVO CLIENTE
 	@PostMapping
-	public Cliente inserir(@RequestBody Cliente cliente){
+	public Cliente inserir(@Valid @RequestBody Cliente cliente){
 		return clienteRepository.save(cliente);
 	}
 	
 	//ATUALIZAR CLIENTE POR ID
+	//SEMPRE QUE FOR ALTERAR/ATUALIZAR ALGO É NECESSARIO O ID IR JUNTO (.setId)
 	@PutMapping("{id}")
-	public ResponseEntity<Cliente> atualizar (@RequestBody Cliente cliente,@PathVariable Long id){
+	public ResponseEntity<Cliente> atualizar (@Valid @RequestBody Cliente cliente,@PathVariable Long id/*ESSE ID É UITLIZADO COMO VÁRIAVEL APENAS*/){
 		//SE CLIENTE EXISTIR ELE IRÁ ATUALIZAAR
 		if(clienteRepository.existsById(id)) {
-			//SETA O ID RECEBIDO DA PESQUISA E USA ELE PARA CONTINUAR O MESMO
+			/*O .setId(id) SETA O ID E É UTILIZADO PARA NÃO
+			 *INSERIR ALGUM CLIENTE COM ID VAZIO,
+			 *PARA O BANCO NÃO ENTENDER COMO NOVO CLIENTE
+			 *
+			 *O ID PEGO SERÁ O PASSADO COMO PARAMETRO E RECEBIDO LÁ NA VARIAVEL
+			 */
 			cliente.setId(id);
 			//AQUI O RESTO DAS INFORMAÇÕES SERÁ ATUALIZADA
 			cliente = clienteRepository.save(cliente);
