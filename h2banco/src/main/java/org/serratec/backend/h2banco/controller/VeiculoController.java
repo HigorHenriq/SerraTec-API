@@ -18,6 +18,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
+
 @RestController
 @RequestMapping("/h2veiculos")
 public class VeiculoController {
@@ -26,12 +30,28 @@ public class VeiculoController {
 	private VeiculoRepository veiculoRepository;
 	
 	@GetMapping
+	@ApiOperation(value = "Retorna todos os veículos cadastrados", notes = "listagem de veículos")
+	@ApiResponses(value = {
+			@ApiResponse(code = 200, message = "Retorna todos os veículos"),
+			@ApiResponse(code = 401, message = "Erro de autenticação"),
+			@ApiResponse(code = 403, message = "Você não tem permissão para acessar o recurso"),
+			@ApiResponse(code = 404, message = "Recurso não encontrado"),
+			@ApiResponse(code = 505, message = "Ocorreu uma exceção"),
+	})
 	public ResponseEntity<List<Veiculo>> Lista(){
 		List<Veiculo> listaVeiculos = veiculoRepository.findAll();
 		return ResponseEntity.ok(listaVeiculos);
 	}
 	
 	@GetMapping("{id}")
+	@ApiOperation(value = "Retorna um cliente", notes = "Cliente")
+	@ApiResponses(value = {
+			@ApiResponse(code = 200 , message = "Retorna um cliente"),
+			@ApiResponse(code = 401 , message = "Erro de autenticação"),
+			@ApiResponse(code = 403 , message = "Você não tem permissão para acessar"),
+			@ApiResponse(code = 404 , message = "Recurso não encontrado"),
+			@ApiResponse(code = 505 , message = "Quando ocorre uma execessão")
+	})
 	public ResponseEntity<Veiculo> pegarVeiculo(@PathVariable Long id) {
 		
 		if(!veiculoRepository.existsById(id)) {
@@ -42,11 +62,27 @@ public class VeiculoController {
 	}
 	
 	@PostMapping
+	@ApiOperation(value = "Cadastra veículo", notes = "listagem de veículos")
+	@ApiResponses(value = {
+			@ApiResponse(code = 201, message = "Veículo adicionado"),
+			@ApiResponse(code = 401, message = "Erro de autenticação"),
+			@ApiResponse(code = 403, message = "Você não tem permissão para acessar o recurso"),
+			@ApiResponse(code = 404, message = "Recurso não encontrado"),
+			@ApiResponse(code = 505, message = "Ocorreu uma exceção"),
+	})
 	public ResponseEntity<Veiculo> inserir(@Valid @RequestBody Veiculo veiculo){
 		return ResponseEntity.ok(veiculoRepository.save(veiculo));
 	}
 	
 	@PutMapping("{id}")
+	  @ApiOperation(value = "Atualiza veículo cadastrado", notes = "atualizar veículos")
+		@ApiResponses(value = {
+				@ApiResponse(code = 200, message = "Veículo atualizado"),
+				@ApiResponse(code = 401, message = "Erro de autenticação"),
+				@ApiResponse(code = 403, message = "Você não tem permissão para acessar o recurso"),
+				@ApiResponse(code = 404, message = "Recurso não encontrado"),
+				@ApiResponse(code = 505, message = "Ocorreu uma exceção"),
+		})
 	public ResponseEntity<Veiculo> atualizar(@Valid @RequestBody Veiculo veiculo, @PathVariable Long id){
 		
 		if(veiculoRepository.existsById(id)) {
@@ -58,6 +94,14 @@ public class VeiculoController {
 	}
 	
 	@DeleteMapping("{id}")
+	 @ApiOperation(value = "Remove veículo cadastrado", notes = "remover veículo")
+		@ApiResponses(value = {
+				@ApiResponse(code = 200, message = "Veículo removido"),
+				@ApiResponse(code = 401, message = "Erro de autenticação"),
+				@ApiResponse(code = 403, message = "Você não tem permissão para acessar o recurso"),
+				@ApiResponse(code = 404, message = "Recurso não encontrado"),
+				@ApiResponse(code = 505, message = "Ocorreu uma exceção"),
+		})
 	public ResponseEntity<Veiculo> deletar(@PathVariable Long id){
 		
 		if(veiculoRepository.existsById(id)) {

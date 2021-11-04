@@ -15,6 +15,8 @@ import javax.persistence.OneToOne;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
+import io.swagger.annotations.ApiModelProperty;
+
 
 
 @Entity
@@ -22,11 +24,13 @@ public class Veiculo {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@ApiModelProperty(value = "Identificador único do veiculo")
 	private Long id;
 	
 	@Column(nullable = false, length = 30)
 	@NotBlank(message = "Preencha a placa")
 	@Size(max = 7)
+	@ApiModelProperty(value = "Placa do carro", required = true)
 	private String placa;
 	
 	@Column
