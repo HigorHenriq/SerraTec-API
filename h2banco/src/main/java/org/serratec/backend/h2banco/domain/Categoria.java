@@ -6,7 +6,7 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 
 public enum Categoria {
 
-	HATCH, SEDAN, PICAPE, SUV, CONVERSÍVEL, MINIVAN;
+	HATCH, SEDAN, PICAPE, SUV, MINIVAN;
 	
 	@JsonCreator
 	public static Categoria verifica(String value) throws ValidationException{
